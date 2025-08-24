@@ -15,8 +15,7 @@
    - `dot_product(v1, v2)`
 3. Spočítej hodnoty pro všechny dvojice vět a porovnej výsledky.
 
-**Odevzdat**
-- `distance_demo_student.py` s vyplněným kódem.
+
 
 **Test**
 - Zkontroluj, které věty jsou si nejblíž podle různých metrik.
@@ -31,16 +30,3 @@
 3. Najdi nejpodobnější větu z kolekce:
    - Použij cosine similarity mezi embeddingem dotazu a embeddingy vět.
    - Vrať top 1 a top 3 výsledky.
-
-**Odevzdat**
-- `sentence_search_student.py` s implementací mini vyhledávače.
-
-**Test**
-- Zadej různé dotazy a ověř, že vyhledávač vrací smysluplně podobné věty.
-- Diskutuj: co se stane, když použiješ místo cosine similarity eukleidovskou vzdálenost?
-
----
-
-## Hodnocení (celkem 6 b)
-- 5A – implementace a srovnání metrik (3 b)
-- 5B – vyhledávač vět (3 b)

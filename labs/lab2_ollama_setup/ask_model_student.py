@@ -1,5 +1,5 @@
 """
-Lab 2 – Part B: Simple CLI wrapper (Student)
+Lab 2 – Part B: Simple CLI wrapper
 
 Task:
 1) Build a Typer CLI with command `ask`.
@@ -18,22 +18,24 @@ from labs.common.settings import OLLAMA_BASE_URL, LLM_MODEL
 
 app = typer.Typer()
 
+
 @app.command()
 def ask(
     prompt: str = typer.Option(..., "--prompt", "-p"),
     model: str = typer.Option(LLM_MODEL, "--model", "-m"),
-    temperature: float = typer.Option(None, "--temperature")
+    temperature: float = typer.Option(None, "--temperature"),
 ):
     url = f"{OLLAMA_BASE_URL}/api/generate"
     payload = {
         "model": model,
-        "prompt": prompt,   # TODO: optionally prepend a system-style instruction
+        "prompt": prompt,  # TODO: optionally prepend a system-style instruction
         "stream": False,
-        "options": {}
+        "options": {},
     }
     # TODO: if temperature is not None, set payload["options"]["temperature"] = temperature
 
     # TODO: POST and print "response"
+
 
 if __name__ == "__main__":
     app()

@@ -1,5 +1,5 @@
 """
-Lab 2 – Part A: Direct REST call to Ollama (Student)
+Lab 2 – Part A: Direct REST call to Ollama
 
 Task:
 1) Read --prompt from CLI (argparse).

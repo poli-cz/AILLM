@@ -1,6 +1,6 @@
 # AILLM — Hands-on labs with Ollama, LangChain, FAISS & RAG
 
-Kompletní sada laboratorních úloh (Lab 2–7) k praktickému školení:
+Sada laboratorních úloh ke školení AILLM:
 - Ollama (lokální LLM)
 - LangChain (prompty, paměť, řetězy)
 - Metriky vektorové vzdálenosti
@@ -25,12 +25,30 @@ Kompletní sada laboratorních úloh (Lab 2–7) k praktickému školení:
   # ollama pull all-minilm  # pokud používáš OllamaEmbeddings s tímto jménem
   ```
 
+- Ujisti se, že **Ollama daemon běží na pozadí**:
+  ```bash
+  ollama serve &
+  ```
+  nebo na Windows spusť aplikaci Ollama.
+
 ### 1.2 Virtuální prostředí + závislosti
 ```bash
 python -m venv .venv
 source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -U pip
 pip install -r requirements.txt
+```
+
+Je důležité laboratoře spouštět z kořene repozitáře, aby fungovaly relativní importy. 
+
+Nejlepší je nastavit `PYTHONPATH`:
+```bash
+export PYTHONPATH=$(pwd)    # Windows: set PYTHONPATH=%cd%
+```
+
+Potom by vám vše mělo fungovat například takto:
+```bash
+python labs/lab2_ollama_setup/solution/rest_call_solution.py --prompt "Say hi in one sentence."
 ```
 
 ### 1.3 .env (doporučeno)
@@ -56,47 +74,6 @@ LOG_LEVEL=INFO
 > Pozn.: Když `.env` nemáš, skripty spadnou na své vestavěné defaulty.
 
 ---
-
-## 2) Struktura repozitáře
-
-```
-.
-├─ common/                     # sdílené utility a konfigurace
-│  ├─ faiss_utils.py
-│  ├─ logging_utils.py
-│  ├─ config.py
-│  └─ __init__.py
-├─ data/                       # vstupní dokumenty (txt/pdf/…)
-├─ faiss_index/                # uložený FAISS index (vytváří se v Lab 6)
-├─ lab2_ollama_setup/
-│  ├─ ask_model_student.py
-│  ├─ options_demo_student.py
-│  ├─ benchmark_student.py
-│  └─ rest_call_student.py
-├─ lab3_langchain_templates/
-│  ├─ template_chain_student.py
-│  └─ structured_output_student.py
-├─ lab4_memory/
-│  ├─ memory_chat_student.py
-│  ├─ summary_memory_student.py
-│  └─ hybrid_memory_student.py   # (nebo alternativní 4C úloha)
-├─ lab5_distance_metrics/
-│  ├─ cosine_demo_student.py
-│  └─ distance_explore_student.py
-├─ lab6_faiss_index/
-│  ├─ build_index_student.py
-│  ├─ search_student.py
-│  └─ evaluate_retrieval_student.py
-├─ lab7_rag_cli/               # název může být lab7_gradio_ui podle tvého layoutu
-│  ├─ chatbot_ui_student.py
-│  ├─ faiss_utils.py           # může symlinkovat či importovat z common/
-│  └─ sessions/                # JSON/SQLite perzistentní historie
-├─ requirements.txt
-└─ README.md
-```
-
-> Pokud se složky jmenují jinak, jen uprav názvy v tomto README.
-
 ---
 
 ## 3) Přehled labin a jak je spustit
@@ -154,10 +131,14 @@ LOG_LEVEL=INFO
 
 ## 4) Běžné problémy & řešení
 
-- **Ollama neběží** → spusť `ollama serve` (resp. start přes OS službu).  
+- **Ollama neběží** → spusť Ollama na pozadí:
+  ```bash
+  ollama serve &
+  ```
+  nebo na Windows spusť Ollama aplikaci.
 - **Model není stažený** → `ollama pull mistral`.  
 - **FAISS index chybí** → nejdřív spusť Lab 6A (build index), vytvoří složku `faiss_index/`.  
 - **Windows cesty** → používej `pathlib.Path` (v utilitách už řešeno).  
 - **Unicode v datech** → otevírej soubory s `encoding="utf-8"`.
 
----
+

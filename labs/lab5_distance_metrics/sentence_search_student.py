@@ -7,7 +7,7 @@ Lab 5B – Mini vyhledávač vět (Student)
 3) Vrať Top-1 a Top-3 výsledky se skóre.
 4) Bonus: přepínač --metric {cosine,euclidean}.
 
-Spuštění:
+Spuštění (opět pozor na python path a root repozitáře)
   python sentence_search_student.py --query "I like playing football"
 """
 
@@ -24,21 +24,24 @@ CORPUS = [
     "I love watching football on weekends.",
     "Basketball requires good coordination.",
     "The highway is crowded this morning.",
-    "I prefer tea over coffee."
+    "I prefer tea over coffee.",
 ]
+
 
 def cosine(a, b):
     # TODO
     return 0.0
 
+
 def euclidean(a, b):
     # TODO
     return 0.0
 
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--query", required=True)
-    ap.add_argument("--metric", choices=["cosine","euclidean"], default="cosine")
+    ap.add_argument("--metric", choices=["cosine", "euclidean"], default="cosine")
     args = ap.parse_args()
 
     # TODO: načti model a spočti embeddingy korpusu + dotazu
@@ -50,6 +53,7 @@ def main():
     # results = [...]
 
     # TODO: vytiskni Top-1 a Top-3 (index, věta, skóre)
+
 
 if __name__ == "__main__":
     main()

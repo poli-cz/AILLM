@@ -9,6 +9,16 @@
 
 ## Předpoklady a instalace
 
+Již instalovány v `requirements.txt`, ale i tak je dobré ověřit, že máte nainstalováno:
+
+```bash
+python -m venv venv
+source venv/bin/activate   # Windows: venv\Scripts\activate
+pip install -U pip
+pip install -r requirements.txt
+```
+
+
 Doporučené balíčky:
 ```bash
 pip install faiss-cpu langchain langchain-community sentence-transformers pypdf

@@ -1,5 +1,5 @@
 """
-Lab 2 – Part C: Options playground (Student)
+Lab 2 – Part C: Options playground
 
 Task:
 1) Expose --temperature, --top_p, --repeat_penalty.
@@ -12,6 +12,7 @@ Example:
 
 import argparse, requests
 from labs.common.settings import OLLAMA_BASE_URL, LLM_MODEL
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -31,10 +32,11 @@ def main():
         "model": args.model,
         "prompt": args.prompt,
         "stream": False,
-        "options": options
+        "options": options,
     }
 
     # TODO: POST and print response
+
 
 if __name__ == "__main__":
     main()
