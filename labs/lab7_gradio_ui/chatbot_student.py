@@ -23,6 +23,7 @@ memory = None
 # TODO: volitelně načti FAISS index a retriever
 retriever = None
 
+
 def chat_fn(message, history):
     # TODO: přidat logiku:
     # - pokud retriever, použít ConversationalRetrievalChain
@@ -30,10 +31,12 @@ def chat_fn(message, history):
     # - příkaz /reset smaže paměť
     return "TODO: odpověď"
 
+
 def export_conversation(history):
     with open("conversation.json", "w", encoding="utf-8") as f:
         json.dump(history, f, ensure_ascii=False, indent=2)
     return "Konverzace uložena."
+
 
 # TODO: UI – ChatInterface, parametry v sidebaru
 demo = None
