@@ -1,0 +1,2 @@
+This is a small knowledge base about transformers, embeddings, and FAISS search.
+

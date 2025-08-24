@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: ../..
+      dockerfile: labs/lab10_docker/Dockerfile
+    ports:
+      - "7860:7860"
+    volumes:
+      - ../../data:/app/data
+    environment:
+      - OLLAMA_BASE_URL=http://host.docker.internal:11434
