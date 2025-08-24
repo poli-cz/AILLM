@@ -9,11 +9,12 @@ Sada laboratorních úloh ke školení AILLM:
 - Produkční tipy (Docker, monitoring, bezpečnost)
 
 > **Minimální verze Pythonu:** 3.10+  
-> **Doporučeno:** 3.11
 
 ---
 
 ## 1) Rychlý start
+
+Budeme využívat virtuální prostředí python a Ollama, takže je potřeba mít nainstalovaný Python 3.10+ a [Ollama](https://ollama.ai). Instalaci budeme probírat na přednášce. Python závislosti jsou připraveny v `requirements.txt`. Celé nastavení je zautomatizované v `bootstrap.sh`.
 
 ### 1.1 Instalace Ollama a modelů
 - Nainstaluj [Ollama](https://ollama.ai).
@@ -32,11 +33,15 @@ Sada laboratorních úloh ke školení AILLM:
   nebo na Windows spusť aplikaci Ollama.
 
 ### 1.2 Virtuální prostředí + závislosti
+Využíjte předpřipravený instalační skript
+
 ```bash
-python -m venv .venv
-source .venv/bin/activate   # Windows: .venv\Scripts\activate
-pip install -U pip
-pip install -r requirements.txt
+bash bootstrap.sh
+```
+
+Aktivujte virtuální prostředí:
+```bash
+source .venv/bin/activate    # Windows: .venv\Scripts\activate
 ```
 
 Je důležité laboratoře spouštět z kořene repozitáře, aby fungovaly relativní importy. 
@@ -52,7 +57,7 @@ python labs/lab2_ollama_setup/solution/rest_call_solution.py --prompt "Say hi in
 ```
 
 ### 1.3 .env (doporučeno)
-V kořenu repo vytvoř `.env` (není povinné, ale usnadní jednotnou konfiguraci):
+V kořenu repo vytvoř `.env` (není povinné, ale usnadní jednotnou konfiguraci). Do env budeme postupně přidávat. Minimalistická ukázka je přímo v repozitáři jako `.env.example`:
 
 ```dotenv
 # adresa lokálního Ollama serveru
@@ -71,8 +76,7 @@ GRADIO_SHARE=false
 LOG_LEVEL=INFO
 ```
 
-> Pozn.: Když `.env` nemáš, skripty spadnou na své vestavěné defaulty.
-
+> Pozn.: `.env` můžeš mít částečně jiný, záleží na tvém nastavení, experimentech atd...
 ---
 ---
 
@@ -82,7 +86,7 @@ LOG_LEVEL=INFO
 - 2A: REST volání do Ollama (`rest_call_student.py`)
 - 2B: CLI přes Typer (`ask_model_student.py`)  
   ```bash
-  python lab2_ollama_setup/ask_model_student.py ask --prompt "Vysvětli cosine similarity" --model mistral --temperature 0.7
+  python labs/lab2_ollama_setup/ask_model_student.py ask --prompt "Vysvětli cosine similarity" --model mistral --temperature 0.7
   ```
 - 2C: Options/payload demo (`options_demo_student.py`)
 - 2D: Benchmark jednoduchých promptů (`benchmark_student.py`)
@@ -91,7 +95,7 @@ LOG_LEVEL=INFO
 - 3A: `PromptTemplate + LLMChain` (`template_chain_student.py`)
 - 3B: `Structured JSON output` + robustní parsování (`structured_output_student.py`)  
   ```bash
-  python lab3_langchain_templates/structured_output_student.py --topic "RAG pitfalls"
+  python labs/lab3_langchain_templates/structured_output_student.py --topic "RAG pitfalls"
   ```
 
 ### **Lab 4 – Paměť**
@@ -103,24 +107,24 @@ LOG_LEVEL=INFO
 - 5A: Cosine similarity demo (`cosine_demo_student.py`)
 - 5B: Průzkum metrik + vizualizace (`distance_explore_student.py`)  
   ```bash
-  python lab5_distance_metrics/distance_explore_student.py --n 200 --metric cosine --plot
+  python labs/lab5_distance_metrics/distance_explore_student.py --n 200 --metric cosine --plot
   ```
 
 ### **Lab 6 – FAISS index**
 - 6A: Načtení dokumentů → chunking → embeddings → FAISS (`build_index_student.py`)
   ```bash
-  python lab6_faiss_index/build_index_student.py --data ./data --out ./faiss_index --chunk 500 --overlap 100
+  python labs/lab6_faiss_index/build_index_student.py --data ./data --out ./faiss_index --chunk 500 --overlap 100
   ```
 - 6B: Vyhledávání + MMR + filtry (`search_student.py`)
   ```bash
-  python lab6_faiss_index/search_student.py --q "what is RAG" --k 5 --mmr 0.3 --fetch 20
+  python labs/lab6_faiss_index/search_student.py --q "what is RAG" --k 5 --mmr 0.3 --fetch 20
   ```
 - 6C: Evaluace retrieveru (precision@k, MRR, recall) (`evaluate_retrieval_student.py`)
 
 ### **Lab 7 – Chatbot s UI (Gradio)**
 - RAG chatbot nad FAISS, paměť, citace, export/perzistence (`chatbot_ui_student.py`)  
   ```bash
-  python lab7_rag_cli/chatbot_ui_student.py
+  python labs/lab7_rag_cli/chatbot_ui_student.py
   ```
   Volitelné:
   - přepínání modelu (`--model`)
