@@ -1,16 +1,15 @@
 """
-Lab 3A – PromptTemplate + LLMChain
+Lab 3A – PromptTemplate + LLMChain (modern Runnable style)
 
 Úkol:
 1) Vytvoř PromptTemplate s {topic} a {level}.
 2) Přidej omezení: <= 5 vět, přesně 1 krátká analogie, friendly styl.
-3) Sestav LLMChain (Ollama) a spusť s CLI argumenty.
+3) Poskládej prompt | llm a spusť s CLI argumenty.
 """
 
 import argparse
 from langchain_community.llms import Ollama
 from langchain.prompts import PromptTemplate
-from langchain.chains import LLMChain
 from labs.common.settings import LLM_MODEL
 
 
@@ -20,9 +19,11 @@ def build_chain():
     # Constraints: <= 5 sentences, exactly ONE short analogy, friendly, concrete.
     tmpl = None  # PromptTemplate.from_template("... {topic} ... {level} ...")
 
-    # TODO(2): vytvoř LLM a chain
+    # TODO(2): vytvoř LLM
     llm = None  # Ollama(model=LLM_MODEL)
-    chain = None  # LLMChain(llm=llm, prompt=tmpl)
+
+    # TODO(3): spoj prompt a llm pomocí |
+    chain = None  # tmpl | llm
     return chain
 
 
@@ -35,8 +36,9 @@ def main():
     args = parser.parse_args()
 
     chain = build_chain()
-    # TODO(3): zavolej chain.run(...) a vytiskni výsledek
-    # out = chain.run({"topic": args.topic, "level": args.level})
+
+    # TODO(4): zavolej chain.invoke(...) a vytiskni výsledek
+    # out = chain.invoke({"topic": args.topic, "level": args.level})
     # print(out.strip())
 
 

@@ -1,11 +1,12 @@
 """
-Lab 3A – PromptTemplate + LLMChain (Solution)
+Lab 3A – PromptTemplate + LLMChain (Solution, Runnable style)
 """
+
 import argparse
 from langchain_community.llms import Ollama
 from langchain.prompts import PromptTemplate
-from langchain.chains import LLMChain
 from labs.common.settings import LLM_MODEL
+
 
 def build_chain():
     tmpl = PromptTemplate.from_template(
@@ -15,19 +16,23 @@ def build_chain():
         "Style: friendly, concrete.\n"
     )
     llm = Ollama(model=LLM_MODEL)
-    chain = LLMChain(llm=llm, prompt=tmpl)
+    # modern composition (no LLMChain)
+    chain = tmpl | llm
     return chain
+
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--topic", required=True)
-    parser.add_argument("--level", default="beginner", choices=["beginner","intermediate","expert"])
+    parser.add_argument(
+        "--level", default="beginner", choices=["beginner", "intermediate", "expert"]
+    )
     args = parser.parse_args()
 
     chain = build_chain()
-    out = chain.run({"topic": args.topic, "level": args.level})
+    out = chain.invoke({"topic": args.topic, "level": args.level})
     print(out.strip())
+
 
 if __name__ == "__main__":
     main()
-
