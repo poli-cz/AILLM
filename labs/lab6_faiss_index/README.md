@@ -33,7 +33,9 @@ ollama pull nomic-embed-text
 
 ## Konfigurace – `.env`
 
-V kořeni projektu vytvořte soubor `.env`:
+Zde budeme potřebovat nastavit více proměnných v `.env`. Konkrétně cestu k FAISS indexu, dokumentům a embedding modely.
+
+Až budete chtít vyzkoušet referenční řešení, je nutné kopírovat řešení ze složky solutions do `labs/lab6_faiss_index/`. 
 
 ```env
 # Kde jsou dokumenty
@@ -56,27 +58,8 @@ ST_MODEL=sentence-transformers/all-MiniLM-L6-v2
 > **Pozn.:** Pokud nechcete používat Ollama, nastavte `USE_OLLAMA_EMBED=0`.  
 > Pokud chybí `nomic-embed-text`, stáhněte ho (`ollama pull nomic-embed-text`).
 
----
 
-## Struktura složek (doporučená)
-
-```
-data/
-  docs/          # sem dejte .txt/.pdf podklady
-  index/
-    faiss_db/    # sem se uloží FAISS index (vytvoří skript)
-labs/
-  lab6_faiss_index/
-    faiss_utils.py
-    ingest_student.py / ingest_solution.py
-    search_student.py / search_solution.py
-    rag_cli_student.py / rag_cli_solution.py
-    README.md
-```
-
----
-
-## 6A – Ingest do FAISS
+## 6A – Načtení do FAISS
 
 **Úkoly**
 - Načti `data/docs/*` (TXT + volitelně PDF).

@@ -17,7 +17,8 @@ Sada laboratorních úloh ke školení AILLM:
 Budeme využívat virtuální prostředí python a Ollama, takže je potřeba mít nainstalovaný Python 3.10+ a [Ollama](https://ollama.ai). Instalaci budeme probírat na přednášce. Python závislosti jsou připraveny v `requirements.txt`. Celé nastavení je zautomatizované v `bootstrap.sh`.
 
 ### 1.1 Instalace Ollama a modelů
-- Nainstaluj [Ollama](https://ollama.ai).
+- Pokud pracujete na sdíledném serveru, není nutné se instalací Ollama zabývat. Přeskoč rovnou na 1.2
+- V případě že pracujete na vlastním strojí následujte instrukce: [Ollama](https://ollama.ai).
 - Stáhni modely, které používáme v labinách:
   ```bash
   ollama pull mistral
