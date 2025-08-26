@@ -19,14 +19,17 @@ os.makedirs(SESS_DIR, exist_ok=True)
 
 
 def build_chain(k: int = 3, temperature: float = 0.7, max_tokens: int = 512):
-    # LLM: temperature + max_tokens pošleme přes model_kwargs
     print("🧪 build_chain() se spustil")  # DEBUG řádek
     llm = Ollama(model="mistral")
     memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
-    store = load_faiss()  # může vyhodit chybu, ošetříme v UI
+    store = load_faiss()
     retriever = store.as_retriever(search_type="mmr", search_kwargs={"k": int(k)})
     chain = ConversationalRetrievalChain.from_llm(
-        llm, retriever=retriever, memory=memory, return_source_documents=True
+        llm,
+        retriever=retriever,
+        memory=memory,
+        return_source_documents=True,
+        output_key="answer",  # ⬅️ DŮLEŽITÉ
     )
     return chain, memory
 
