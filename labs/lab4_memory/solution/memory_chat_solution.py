@@ -109,7 +109,7 @@ def main():
         if user in {"/quit", "/exit"}:
             break
 
-        history = sessions[args.session]
+        history = sessions.setdefault(args.session, InMemoryChatMessageHistory())
 
         if user == "/reset":
             history.clear()
