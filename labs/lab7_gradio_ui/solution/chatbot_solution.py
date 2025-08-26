@@ -1,10 +1,18 @@
 import gradio as gr
 import json
 import textwrap
+import os, sys
+
+# Přidej cestu dřív, než začneš importovat vlastní soubory
+sys.path.append(
+    os.path.abspath(os.path.join(os.path.dirname(__file__), "../../common"))
+)
+
 from langchain_community.llms import Ollama
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
 from faiss_utils import load_faiss
+
 
 # --- Stav / inicializace -----------------------------------------------------
 

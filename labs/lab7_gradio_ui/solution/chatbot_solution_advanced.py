@@ -20,10 +20,8 @@ os.makedirs(SESS_DIR, exist_ok=True)
 
 def build_chain(k: int = 3, temperature: float = 0.7, max_tokens: int = 512):
     # LLM: temperature + max_tokens pošleme přes model_kwargs
-    llm = Ollama(
-        model="mistral",
-        model_kwargs={"temperature": float(temperature), "num_predict": int(max_tokens)},
-    )
+    print("🧪 build_chain() se spustil")  # DEBUG řádek
+    llm = Ollama(model="mistral")
     memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
     store = load_faiss()  # může vyhodit chybu, ošetříme v UI
     retriever = store.as_retriever(search_type="mmr", search_kwargs={"k": int(k)})
@@ -83,7 +81,9 @@ def load_session(session_id: str) -> List[Tuple[str, str]]:
         return []
 
 
-def hydrate_memory_from_history(memory: ConversationBufferMemory, history: List[Tuple[str, str]]):
+def hydrate_memory_from_history(
+    memory: ConversationBufferMemory, history: List[Tuple[str, str]]
+):
     """Naplní ConversationBufferMemory podle chat_history."""
     memory.clear()
     for user, assistant in history or []:
@@ -123,8 +123,8 @@ with gr.Blocks(title="Lab7 RAG Chatbot (Persistent Sessions)") as demo:
             btn_new = gr.Button("Nové sezení")
 
     # sdílené stavy
-    chain_state = gr.State(None)     # ConversationalRetrievalChain
-    memory_state = gr.State(None)    # ConversationBufferMemory
+    chain_state = gr.State(None)  # ConversationalRetrievalChain
+    memory_state = gr.State(None)  # ConversationBufferMemory
     session_id_state = gr.State(new_session_id())  # aktuální session_id
 
     def init_chain(k, temp, max_tok):
@@ -159,10 +159,6 @@ with gr.Blocks(title="Lab7 RAG Chatbot (Persistent Sessions)") as demo:
 
         try:
             # dynamická aktualizace parametrů
-            chain.llm.model_kwargs.update(
-                {"temperature": float(temp), "num_predict": int(max_tok)}
-            )
-            chain.retriever.search_kwargs["k"] = int(k)
 
             result = chain.invoke({"question": user_message})
             answer = result.get("answer", "").strip()
@@ -216,26 +212,63 @@ with gr.Blocks(title="Lab7 RAG Chatbot (Persistent Sessions)") as demo:
 
     def do_new_session():
         sid = new_session_id()
-        return [], f"🆕 Nové sezení: {sid}", sid, gr.update(choices=list_sessions(), value=None)
+        return (
+            [],
+            f"🆕 Nové sezení: {sid}",
+            sid,
+            gr.update(choices=list_sessions(), value=None),
+        )
 
     # Drátování akcí
     btn_send.click(
         fn=respond,
-        inputs=[user_msg, chat, retr_k, temperature, max_tokens, chain_state, memory_state],
+        inputs=[
+            user_msg,
+            chat,
+            retr_k,
+            temperature,
+            max_tokens,
+            chain_state,
+            memory_state,
+        ],
         outputs=[user_msg, chat, chain_state, memory_state, status],
     )
     user_msg.submit(
         fn=respond,
-        inputs=[user_msg, chat, retr_k, temperature, max_tokens, chain_state, memory_state],
+        inputs=[
+            user_msg,
+            chat,
+            retr_k,
+            temperature,
+            max_tokens,
+            chain_state,
+            memory_state,
+        ],
         outputs=[user_msg, chat, chain_state, memory_state, status],
     )
     btn_reset_mem.click(fn=reset_memory, inputs=[memory_state], outputs=[chat, status])
-    btn_reload.click(fn=reload_index, inputs=[retr_k, temperature, max_tokens], outputs=[chain_state, memory_state, status])
+    btn_reload.click(
+        fn=reload_index,
+        inputs=[retr_k, temperature, max_tokens],
+        outputs=[chain_state, memory_state, status],
+    )
     btn_export.click(fn=export_chat, inputs=[chat], outputs=[status])
 
-    btn_save.click(fn=do_save, inputs=[chat, session_id_state], outputs=[status, sessions_dd, session_id_state])
-    btn_load.click(fn=do_load, inputs=[sessions_dd, chain_state, memory_state], outputs=[chat, status, chain_state, memory_state])
-    btn_new.click(fn=do_new_session, inputs=None, outputs=[chat, status, session_id_state, sessions_dd])
+    btn_save.click(
+        fn=do_save,
+        inputs=[chat, session_id_state],
+        outputs=[status, sessions_dd, session_id_state],
+    )
+    btn_load.click(
+        fn=do_load,
+        inputs=[sessions_dd, chain_state, memory_state],
+        outputs=[chat, status, chain_state, memory_state],
+    )
+    btn_new.click(
+        fn=do_new_session,
+        inputs=None,
+        outputs=[chat, status, session_id_state, sessions_dd],
+    )
 
 if __name__ == "__main__":
     demo.launch()
