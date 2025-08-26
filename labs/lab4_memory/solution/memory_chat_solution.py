@@ -1,4 +1,3 @@
-# labs/lab4_memory/solution/memory_chat_solution.py
 import argparse, json
 from typing import Dict, List
 
@@ -53,7 +52,9 @@ def trim_history_to_window(
 # --- Hlavní část -------------------------------------------------------------
 
 
-def build_chain() -> RunnableWithMessageHistory:
+def build_chain() -> (
+    tuple[RunnableWithMessageHistory, Dict[str, InMemoryChatMessageHistory]]
+):
     """
     Vytvoří moderní runnable s message historií.
     Historie je spravována přes InMemoryChatMessageHistory (bez LLMChain).
@@ -77,12 +78,14 @@ def build_chain() -> RunnableWithMessageHistory:
     def get_history(session_id: str) -> InMemoryChatMessageHistory:
         return sessions.setdefault(session_id, InMemoryChatMessageHistory())
 
-    return RunnableWithMessageHistory(
+    runnable_with_memory = RunnableWithMessageHistory(
         runnable,
         get_history,
         input_messages_key="input",
         history_messages_key="history",
     )
+
+    return runnable_with_memory, sessions
 
 
 def main():
@@ -96,7 +99,7 @@ def main():
     ap.add_argument("--session", default="default", help="ID session pro historii.")
     args = ap.parse_args()
 
-    chain = build_chain()
+    chain, sessions = build_chain()
     print("Chat spuštěn. Příkazy: /reset, /save <path>, /quit")
 
     current_window = args.window
@@ -106,10 +109,7 @@ def main():
         if user in {"/quit", "/exit"}:
             break
 
-        # přístup k historii přes config (protože je uvnitř RunnableWithMessageHistory)
-        history: InMemoryChatMessageHistory = chain._get_configurable_field(
-            config={"configurable": {"session_id": args.session}}, key="history_factory"
-        )(args.session)
+        history = sessions[args.session]
 
         if user == "/reset":
             history.clear()
