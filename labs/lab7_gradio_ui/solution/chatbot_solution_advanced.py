@@ -28,8 +28,9 @@ def build_chain(k: int = 3, temperature: float = 0.7, max_tokens: int = 512):
         llm,
         retriever=retriever,
         memory=memory,
+        memory_key="chat_history",  # ⬅️ musí být výslovně nastaven
+        output_key="answer",  # ⬅️ co uložit do paměti
         return_source_documents=True,
-        output_key="answer",  # ⬅️ DŮLEŽITÉ
     )
     return chain, memory
 
